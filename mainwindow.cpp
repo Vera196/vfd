@@ -14,10 +14,15 @@ MainWindow::MainWindow(QWidget *parent)
     ui->spinBox->setSuffix(" Hz");
 
 
-    QSerialPort *port = new QSerialPort ("COM3");
-    portSettings(port);
+   // QSerialPort *port = new QSerialPort ("COM3");
+    portSettings();
 
     port->open(QIODevice::ReadWrite);
+
+
+    connect(port, &QSerialPort::readyRead, this, &MainWindow::readAnswer );    //potenzyalnoe mesto kosiaka
+
+
 
 //: slaveadress kodfunc dannye lrc \r\n
 
@@ -37,33 +42,33 @@ MainWindow::MainWindow(QWidget *parent)
 
 
 
-
-    msg=":\r\n";
+    msg=":010302120000\r\n";
 
     qDebug()<< msg;
     qDebug()<<msg.size();
 
-//QByteArray test;
-//    port->write(msg, msg.length());
+
+    //port->write(msg, msg.length());
+    port->write(msg);
+
 //    port->waitForBytesWritten(19);
-//    port->flush();
+//    port->flush();                        //scho eto voobze
 //    port->waitForReadyRead(19);
-//    qDebug() << "Tx: "<<msg.toHex();
-//    qDebug() << "bufferSize: " << port->readBufferSize();
-//    test = port->readAll();
-//    qDebug() << "Rx: "<< test;
 
 
-    port->close();
+
+
+    //port->close();
 
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+    port->close();
 }
 
-void MainWindow::portSettings(QSerialPort* port)
+void MainWindow::portSettings()
 {
     port->setBaudRate(QSerialPort::Baud9600);
     port->setDataBits(QSerialPort::Data8);
@@ -143,12 +148,19 @@ void MainWindow::reverse()
 
         qDebug()<< msg;
         qDebug()<<msg.size();
+
+
+}
+
+void MainWindow::readAnswer()
+{
+    QByteArray buffer = port->readAll();
+    ui->lineEdit->setText(buffer);
 }
 
 
 
-
-void MainWindow::on_pushButton_clicked()  //zaproc po chastote
+void MainWindow::on_pushButton_clicked()  //zapros po chastote
 {
     chastota=ui->spinBox->value();
 
@@ -162,7 +174,6 @@ void MainWindow::on_pushButton_clicked()  //zaproc po chastote
     QByteArray data(QByteArray::number(chastota, 16).toUpper());
     while(data.size()%4!=0)
         data.insert(0, "0");
-    //msg.insert(msg.size()-2, data);
     msg.push_back(data);
 
     msg.push_back("\r\n");
@@ -173,5 +184,23 @@ void MainWindow::on_pushButton_clicked()  //zaproc po chastote
 
         qDebug()<< msg;
         qDebug()<<msg.size();
+        //ui->lineEdit->setText(msg);
+
+    port->write(msg);
+
+}
+
+
+void MainWindow::on_pushButton_2_clicked()
+{
+    msg=":010302120000\r\n";
+
+    msg.insert(msg.size()-2, QByteArray::number(lrcCount(msg), 16).toUpper());
+
+    qDebug()<< msg;
+    qDebug()<<msg.size();
+
+
+    port->write(msg);
 }
 

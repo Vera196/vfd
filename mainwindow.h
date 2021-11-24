@@ -19,16 +19,20 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    void portSettings(QSerialPort *);
+    void portSettings();
     void createMSG();
     int lrcCount(QByteArray);
     void reverse();
+    void readAnswer();
 
 private slots:
     void on_pushButton_clicked();
 
+    void on_pushButton_2_clicked();
+
 private:
     Ui::MainWindow *ui;
+    QSerialPort *port = new QSerialPort ("COM3");
     QByteArray msg;
     int chastota=0;
 
