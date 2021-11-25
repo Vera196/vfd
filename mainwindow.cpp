@@ -40,9 +40,9 @@ MainWindow::MainWindow(QWidget *parent)
 
 
 
-
-
-    msg=":010302120000\r\n";
+    //upravlenie s rs-485(prioritet)
+    msg=":010602010003\r\n"; //nado li ono
+    msg.insert(msg.size()-2, QByteArray::number(lrcCount(msg), 16).toUpper());
 
     qDebug()<< msg;
     qDebug()<<msg.size();
@@ -129,10 +129,11 @@ void MainWindow::reverse()
 {
     msg=":";
 
-// 02.12 chastota po comportu ???
+    // 04.06 - 04.08 ????
+    // data = 21(v 10-richnoi)???
 
     //zapisali slave, func i adress
-    msg.push_back("01030212");                       //pomeniat adress
+    msg.push_back("01060212");                       //pomeniat adress
 
 //    QByteArray data(QByteArray::number(chastota, 16).toUpper());
 //    while(data.size()%4!=0)
@@ -167,9 +168,10 @@ void MainWindow::on_pushButton_clicked()  //zapros po chastote
     msg=":";
 
 // 02.12 chastota po comportu ???
+// ili 04.06 - 04.08 ????
 
     //zapisali slave, func i adress
-    msg.push_back("01030212");
+    msg.push_back("01060212");
 
     QByteArray data(QByteArray::number(chastota, 16).toUpper());
     while(data.size()%4!=0)
@@ -193,7 +195,7 @@ void MainWindow::on_pushButton_clicked()  //zapros po chastote
 
 void MainWindow::on_pushButton_2_clicked()
 {
-    msg=":010302120000\r\n";
+    msg=":010602120000\r\n";
 
     msg.insert(msg.size()-2, QByteArray::number(lrcCount(msg), 16).toUpper());
 
