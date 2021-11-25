@@ -132,8 +132,8 @@ void MainWindow::reverse()
     // 04.06 - 04.08 ????
     // data = 21(v 10-richnoi)???
 
-    //zapisali slave, func i adress
-    msg.push_back("01060212");                       //pomeniat adress
+    //zapisali slave, func i adres
+    msg.push_back("01060212");                       //pomeniat adres
 
 //    QByteArray data(QByteArray::number(chastota, 16).toUpper());
 //    while(data.size()%4!=0)
@@ -170,7 +170,7 @@ void MainWindow::on_pushButton_clicked()  //zapros po chastote
 // 02.12 chastota po comportu ???
 // ili 04.06 - 04.08 ????
 
-    //zapisali slave, func i adress
+    //zapisali slave, func i adres
     msg.push_back("01060212");
 
     QByteArray data(QByteArray::number(chastota, 16).toUpper());
