@@ -20,10 +20,12 @@ public:
     ~MainWindow();
 
     void portSettings();
-    void createMSG();
     int lrcCount(QByteArray);
-    void reverse();
     void readAnswer();
+    void forward();
+    void reverse();
+    void run();
+    void stop();
 
 private slots:
     void on_pushButton_clicked();
